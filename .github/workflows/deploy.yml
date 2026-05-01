@@ -28,7 +28,7 @@ jobs:
           git config --global user.name "github-actions"
 
           echo "Cloning HF Space..."
-          git clone https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE repo
+          git clone https://huggingface.co/spaces/datarachel/Digitaltwin repo
 
           echo "Listing cloned repo:"
           ls repo
