@@ -28,7 +28,7 @@ jobs:
           git config --global user.name "github-actions"
 
           echo "Cloning HF Space..."
-          git clone https://huggingface.co/spaces/datarachel/Digitaltwin repo
+          git clone https://huggingface.co/spaces/datarachel/digitaltwin repo
 
           echo "Listing cloned repo:"
           ls repo
@@ -39,4 +39,4 @@ jobs:
           cd repo
           git add .
           git commit -m "Auto-deploy from GitHub" || echo "No changes"
-          git push https://datarachel:$HF_TOKEN@huggingface.co/spaces/datarachel/Digitaltwin main
+          git push https://datarachel:$HF_TOKEN@huggingface.co/spaces/datarachel/digitaltwin main
