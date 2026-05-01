@@ -27,3 +27,4 @@ jobs:
           git add .
           git commit -m "Auto-deploy from GitHub" || echo "No changes"
           git push https://datarachel:$HF_TOKEN@huggingface.co/spaces/datarachel/Digitaltwin main
+
