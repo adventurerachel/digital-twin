@@ -1,7 +1,7 @@
-# Digital Twin Project
+# Digital Twin
 
 ## 🔍 Overview
-Digital version of Rachel Phang - ask questions about her professional experience, send notifications to the real Rachel Phang, or just have a chat!
+Digital version of Rachel Phang - ask questions about my professional experience, send notifications to the real Rachel Phang, or just have a chat!
 
 ## ⚙️ Architecture
 - Model: gpt-4.1-mini
