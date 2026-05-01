@@ -11,20 +11,32 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+
+      - name: Debug file structure
+        run: |
+          echo "Listing repo contents:"
+          ls -R
 
       - name: Push to Hugging Face Space
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
+          set -e
+
           git config --global user.email "you@example.com"
           git config --global user.name "github-actions"
 
-          git clone https://huggingface.co/spaces/datarachel/Digitaltwin repo
-          rsync -av --delete ./app/ repo/
+          echo "Cloning HF Space..."
+          git clone https://huggingface.co/spaces/YOUR_USERNAME/YOUR_SPACE repo
+
+          echo "Listing cloned repo:"
+          ls repo
+
+          echo "Syncing files..."
+          rsync -av ./app/ repo/ || echo "Rsync failed"
 
           cd repo
           git add .
           git commit -m "Auto-deploy from GitHub" || echo "No changes"
           git push https://datarachel:$HF_TOKEN@huggingface.co/spaces/datarachel/Digitaltwin main
-
