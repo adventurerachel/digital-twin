@@ -2,6 +2,8 @@
 
 ## 🔍 Overview
 Digital version of Rachel Phang - ask questions about my professional experience, send notifications to the real Rachel Phang, or just have a chat!
+This github repo hosts the code for the digital twin in app.py and any updates feed through to Hugging Face Spaces, where it is hosted with a gradio interface.
+Updates use Github Actions to push to Hugging Face Spaces.
 
 ## ⚙️ Architecture
 - Model: gpt-4.1-mini
