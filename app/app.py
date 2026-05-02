@@ -439,5 +439,5 @@ gr.ChatInterface(
 	title="Digital Rachel Phang",
 	chatbot=gr.Chatbot(avatar_images=(None, "rachel.jpg"), height=600),
 	description="Chat with an AI version of Rachel Phang. Ask about her experience, projects, or just say hi. You can also ask her to roll one or more dice!",
-	examples=["Tell me about yourself", "Help me make a decision (roll dice if close)", "Collaborate/reach out to real Rachel"]
+	examples=["Tell me about yourself", "Help me make a decision (roll dice if close)", "Collaborate/reach out to real Rachel", "...or just start chatting below!"]
 ).launch()
