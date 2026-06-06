@@ -32,7 +32,8 @@ jobs:
 
           git config --global user.email "you@example.com"
           git config --global user.name "github-actions"
-
+          
+          rm -rf repo
           git clone https://huggingface.co/spaces/datarachel/digitaltwin repo
 
           rsync -av ./app/ repo
