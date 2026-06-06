@@ -112,15 +112,6 @@ def chunk_text(text: str, chunk_size: int = 500, overlap: int = 50) -> list[str]
 #RAG: Chunk, Embed & Store in ChromaDB
 #-------------------------------
 
-documents = [
-    {"text": context_professional, "source": "context_professional"},
-    {"text": context_personal, "source": "context_personal"},
-    {"text": context_languages, "source": "context_languages"},
-    {"text": context_education, "source": "context_education"},
-    {"text": context_food, "source": "context_food"},
-    {"text": context_dt, "source": "context_dt"}
-]
-
 chunks = []
 ids = []
 metadatas = []
