@@ -7,7 +7,7 @@ from pprint import pprint
 import json
 import requests
 import random
-from huggingface_hub import hf_hub_download
+from huggingface_hub import hf_hub_download, file_download_info
 
 #-------------------------------
 #Setup
@@ -26,6 +26,7 @@ HF_TOKEN=os.getenv("HF_TOKEN")
 #Documents
 #-------------------------------
 
+
 doc_files={
 "Professional" : "context_professional.txt",
 "Personal": "context_personal.txt",
@@ -36,17 +37,40 @@ doc_files={
 "About the digital twin": "context_dt.txt"
 }
 
+CACHE_DIR = "cache_docs"
+os.makedirs(CACHE_DIR, exist_ok=True)
+
 documents=[]
 
 for source_name, filename in doc_files.items():
-	path=hf_hub_download(repo_id="datarachel/profile",
-	filename=filename,
-	repo_type="dataset",
-	token=HF_TOKEN)
 
-with open(path "r") as f:
-	text = f.read()
-	documents.append({"text":text, "source":source_name})
+	local_path = os.path.join(CACHE_DIR, filename)
+
+	# 1. Check cache first
+	if os.path.exists(local_path):
+		print(f"Using cached file: {filename}")
+		path = local_path
+	
+	path=hf_hub_download(
+		repo_id="datarachel/profile",
+		filename=filename,
+		repo_type="dataset",
+		token=HF_TOKEN
+	)
+
+	# 2. Save into cache folder for future runs
+	with open(path, "r") as src, open(local_path, "w") as dst:
+		dst.write(src.read())
+
+	# 3. Load into memory
+	with open(local_path, "r") as f:
+		text = f.read()
+	
+	documents.append({
+		"text": text, 
+		"source": source_name
+	})
+	
 	print(f"Loaded:{source_name}")
 
 #-------------------------------
