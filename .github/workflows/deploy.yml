@@ -1,3 +1,9 @@
+name: Cache HF Space repo
+uses: actions/cache@v4
+with:
+  path: repo
+  key: hf-space-repo
+
 name: Deploy to Hugging Face Spaces
 
 on:
