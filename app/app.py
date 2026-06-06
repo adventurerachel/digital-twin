@@ -7,6 +7,7 @@ from pprint import pprint
 import json
 import requests
 import random
+from huggingface_hub import hf_hub_download
 
 #-------------------------------
 #Setup
@@ -19,116 +20,34 @@ client = OpenAI()
 
 MODEL = "gpt-4.1-mini"
 
+HF_TOKEN=os.getenv("HF_TOKEN")
+
 #-------------------------------
 #Documents
 #-------------------------------
 
-context_professional = """
-Here is a link to Rachel's linkedin: https://www.linkedin.com/in/rachelphang/
+doc_files={
+"Professional" : "context_professional.txt",
+"Personal": "context_personal.txt",
+"Languages": "context_lang.txt",
+"Food": "context_food.txt",
+"Education": "context_educ.txt",
+"Certifications and Skills": "context_certs_and_skills.txt",
+"About the digital twin": "context_dt.txt"
+}
 
-Rachel has leveraged her background in financial services with data skills in the ever-exciting and ever-changing field of
-data analytics. She enjoys the technical challenge as well as the reward of seeing something she has built being used in an impactful way.
+documents=[]
 
-In the future, she is keen to continue to keep up with the field, building up technical knowledge, as well as building management skills.
+for source_name, filename in doc_files.items():
+	path=hf_hub_download(repo_id="datarachel/profile",
+	filename=filename,
+	repo_type="dataset",
+	token=HF_TOKEN)
 
-What ties all these things together (alongside what is listed in her personal profile) is a keenness to get out of her comfort zone, driving a growth mindset.
-
-RELEVANT EXPERIENCE
-Organisation: Citi 
-Tenure: Jun 2024 - May 2025
-Title: Loans Transformation Data Analyst (Contract)
-Geography: London, United Kingdom
-Summary: Delivered high-impact data remediation under Citi’s global Lending Transformation Programme, automating regulatory reporting and strengthening compliance.
-Partnered with cross-functional teams to optimise data sourcing, enhance governance, and improve risk transparency for senior stakeholders.
-Applied advanced workflow automation (KNIME) to replace manual processes, reinforcing a foundation for scalable AI and data-driven solutions.
-
-Organisation: LSEG Capital Markets (formerly Refinitiv)
-Tenure: Mar 2019 - Mar 2024 
-Geography: London, United Kingdom
-Title: FX Transactions Sales Data Analyst
-Summary: Built and deployed a suite of Tableau dashboards, transforming sales reporting into real-time insights for global FX teams.
-Automated complex manual workflows in Alteryx, saving 90-180 hours per month and pioneering analytics tools that became client-facing products.
-Re-engineered SQL pipelines to improve scalability and performance, supporting long-term product and data innovation.
-Acted as the sole technical partner to senior sales leadership, gathering requirements and shaping analytics strategy.
-
-Organisation: The Information Lab
-Tenure: Feb 2017 - Jan 2019
-Geography: London, United Kingdom
-Title: Consultant Data Analyst (Tableau and Alteryx)
-Summary: Delivered data strategy and analytics solutions for top-tier clients (JP Morgan, UBS, ISS), shaping operating models for scalable data use.
-Supported clients in defining data roadmaps and business cases, highlighting ROI of automation and self-service analytics.
-Designed and implemented reusable analytics frameworks that accelerated client delivery while embedding governance.
-Facilitated stakeholder workshops and training sessions to foster a data-driven culture and sustainable adoption.
-
-EARLY CAREER HIGHLIGHTS
-Organisation: Maybank Asset Management
-Title: Fixed Income Fund Manager / Credit Analyst
-Tenure: Oct 2011 - Jun 2015
-Geography: Kuala Lumpur, Malaysia
-Summary: Managed long-only fixed income funds for institutional funds, conventional corporate mandates, foundation & retirement (balanced) funds, and high net worth individuals’ portfolios. Performed credit analysis of Asian Corporates and Financial Institutions and trade execution for Asian USD funds as well as local currency (MYR) funds and mandates.
-
-Organisation: Alliance Investment Management
-Tenure: Dec 2008 - Sep 2011 · 2 yrs 10 mos
-Title: AVP Credit Analyst and CLO Portfolio Manager
-Geography: Kuala Lumpur, Malaysia
-Summary: Credit analyst supporting fixed income fund manager.
-Monitored and managed a RM800 million CLO portfolio of 25 Malaysian performing and non-performing loans through to maturity.
-Undertook a lead role in formulating the Alliance Financial Group five year strategy reporting directly to Group CEO as part of the CEO's Special Projects Team, having been selected to handle EVA modelling due to strong financial statement analysis background.
-
-Organisation: Fitch Ratings
-Tenure: Aug 2006 - Feb 2008 · 1 yr 7 mos
-Title: CDO Performance Analyst (Promoted from CDO Performance Coordinator after 12 months)
-Geography: London, United Kingdom
-Summary: Developed broad knowledge of the European CDO market and extensive knowledge of various CDO structures, including both cash and synthetic structures, SME CDOs, CLOs, CDO-squared, and market value CDOs, as well as SIVs.
-ECA International logo
-
-Organisation: ECA International
-Tenure: Feb 2006 - Jul 2006
-Title: Cost of Living Research Analyst
-Geography: London, United Kingdom
-Summary: Research analysis within the Cost of Living department, including inflation research and analysis using in-house systems and developing Excel spreadsheets to facilitate in-depth research of cost of living indicators.  Key statistics kept current and published on a regular basis, as well as on demand to clients.
-
-CERTIFICATIONS, & TECHNICAL SKILLS
-Google Cloud Data Analytics Certificate (In Progress, expected completion 2026): Completed 2 of 5 courses; focusing on cloud-native data services, architecture, and leveraging GCP for advanced analytics and reporting.
-dbt Fundamentals (2025)
-Tableau Desktop Certified Associate (2019)
-Alteryx Designer Advanced (2018, 2024) | Alteryx Certified Partner (2017)
-KNIME, SQL, Excel/VBA
-Data visualization and reporting for compliance, risk, and performance
-Financial and risk analysis
-AI Engineering
-"""
-
-context_personal="""Rachel spent 9 years of her childhood in Jakarta. She also spent 6 years of her childhood in Kuala Lumpur. She has also spent 3 months in Bogota as an adult, living in the La Candelaria area and using it as a base for exploring Colombia. Outside of work, she enjoys exploring new places, both in London (where she lives) and in the wider UK, as well as short haul city breaks in Europe and, when she gets the chance, time to explore further in the rest of the world. To help with that, she also enjoys learning and practicing different natural languages and keeping fit. She spent a few years learning capoeira (although she still isn't very good at it), and loves a good roda."""
-
-context_languages="""Aside from English, Rachel speaks conversational Spanish, Bahasa Indonesia, and Bahasa Malaysia. She has a basic understanding of Cantonese. """
-
-context_food="""Rachel enjoys pasta, noodles, and rice. She enjoys Mexican, Italian, Vietnamese, Nigerian, Malaysian, and Indonesian food, as well as exploring the diverse regional cuisines of China."""
-
-context_education="""Rachel has a
-MSc (with Distinction) in Finance and Management, Keele University, UK and a 
-BSc (Hons) Economics, Econometrics & Finance, University of York, UK"""
-
-context_dt=f"""
-This is how I built my Digital Twin, that you are currently interacting with:
-
-After 5 weeks of hands-on learning in the @SuperDataScience AI Engineering challenge, I deployed a fully functional AI assistant that:
-
-✅ Answers questions about my background
-✅ Uses RAG to retrieve relevant info
-✅ Via tool-calling can notify me when someone wants to connect
-
-What I learned in the process:
-- Prompt engineering (system vs user prompts)
-- Tokenization and API Cost management
-- Conversation history & context management
-- Building chat UIs with Gradio
-- RAG (chunking, embeddings, vector stores)
-- LLM tool calling (parallel & sequential calls)
-- Deploying to Hugging Face Spaces
-
-The model in use is {MODEL}
-"""
+with open(path "r") as f:
+	text = f.read()
+	documents.append({"text":text, "source":source_name})
+	print(f"Loaded:{source_name}")
 
 #-------------------------------
 #Chunking Function
