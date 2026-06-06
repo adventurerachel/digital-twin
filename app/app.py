@@ -7,7 +7,7 @@ from pprint import pprint
 import json
 import requests
 import random
-from huggingface_hub import hf_hub_download, file_download_info
+from huggingface_hub import hf_hub_download
 
 #-------------------------------
 #Setup
