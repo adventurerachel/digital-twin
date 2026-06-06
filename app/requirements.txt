@@ -2,3 +2,4 @@ openai
 gradio
 chromadb
 requests
+huggingface_hub
